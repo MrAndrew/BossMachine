@@ -1,10 +1,6 @@
 const express = require('express');
 const apiRouter = express.Router();
 
-const { createMeeting, getAllFromDatabase, getFromDatabaseById,
-addToDatabase, updateInstanceInDatabase, deleteFromDatabasebyId,
-deleteAllFromDatabase } = require('./db.js');
-
 //require and use minions router for all minion routes
 const minionsRouter = require('./minionsRouter');
 apiRouter.use('/minions', minionsRouter);

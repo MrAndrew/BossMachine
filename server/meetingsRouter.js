@@ -1,4 +1,4 @@
-const meetingsRouter = require('express').Router({mergeParams: true})
+const meetingsRouter = require('express').Router();
 
 const { createMeeting, getAllFromDatabase, getFromDatabaseById,
 addToDatabase, updateInstanceInDatabase, deleteFromDatabasebyId,

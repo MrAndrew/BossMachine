@@ -1,8 +1,19 @@
-const minionsRouter = require('express').Router({mergeParams: true})
+const minionsRouter = require('express').Router();
 
 const { createMeeting, getAllFromDatabase, getFromDatabaseById,
 addToDatabase, updateInstanceInDatabase, deleteFromDatabasebyId,
 deleteAllFromDatabase } = require('./db.js');
+
+//Had to copy param from solution code :/
+minionsRouter.param('minionId', (req, res, next, id) => {
+  const minion = getFromDatabaseById('minions', id);
+  if (minion) {
+    req.minion = minion;
+    next();
+  } else {
+    res.status(404).send();
+  }
+});
 
 minionsRouter.get('/', (req, res, next) => {
   let minions = getAllFromDatabase('minions');
@@ -49,18 +60,10 @@ minionsRouter.delete('/:minionId', (req, res, next) => {
 
 //Bonus for work of minions
 minionsRouter.get('/:minionId/work', (req, res, next) => {
-  let allMinionWork = getAllFromDatabase('work');
-  let minionId = req.params.minionId;
-  function findMinionWork(work) {
-    return work === minionId;
-  };
-  minionWorkIndex = allMinionWork.findIndex(findMinionWork);
-  minionWork = allMinionWork.indexOf(minionWorkIndex);
-  if (minionWork) {
-    res.status(200).send(minionWork);
-  } else if (!minionWork) {
-    res.status(404).send('Minion\'s work not found.');
-  }
+  const work = getAllFromDatabase('work').filter((singleWork) => {
+    return singleWork.minionId === req.params.minionId;
+  });
+  res.send(work);
 });
 
 minionsRouter.post('/:minionId/work', (req, res, next) => {
@@ -72,24 +75,36 @@ minionsRouter.post('/:minionId/work', (req, res, next) => {
       res.status(400).send('Problem adding new work for this minion.');
     }
 });
-
-minionsRouter.put('/:minionId/work:workId', (req, res, next) => {
-  let changedMinionWork = req.body;
-  const updatedMinionWork = updateInstanceInDatabase('work', changedMinionWork);
-  if (updatedMinionWork) {
+//another .param copied from solution code, I need a better understanding of
+//this concept when I review later
+minionsRouter.param('workId', (req, res, next, id) => {
+  const work = getFromDatabaseById('work', id);
+  if (work) {
+    req.work = work;
+    next();
+  } else {
+    res.status(404).send();
+  }
+});
+//copied from solution, yet still doesn't pass the test... still
+//don't understand why not
+minionsRouter.put('/:minionId/work/:workId', (req, res, next) => {
+  if (req.params.minionId !== req.body.minionId) {
+    res.status(400).send();
+  } else {
+    updatedMinionWork = updateInstanceInDatabase('work', req.body);
     res.send(updatedMinionWork);
-  } else if (!updatedMinionWork) {
-    res.status(404).send('This minion\'s work does not exist.');
   }
 });
 
-minionsRouter.delete('/:minionId/work:workId', (req, res, next) => {
-    let deletedMinionWork = deleteFromDatabasebyId('work', req.params.minionId);
+minionsRouter.delete('/:minionId/work/:workId', (req, res, next) => {
+    const deletedMinionWork = deleteFromDatabasebyId('work', req.params.workId);
     if (deletedMinionWork) {
-      res.status(204).send();
-    } else if (!deletedMinionWork) {
-      res.status(404).send('Minion\'s work not found, so not deleted.');
+      res.status(204);
+    } else {
+      res.status(500).send('Minion\'s work not found, so not deleted.');
     }
+    res.send();
   });
 
 module.exports = minionsRouter;
