@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-In this project, you will create an entire API to serve information to a Boss Machine, a unique management application for today's most accomplished entreprenerus. You will create routes to manage your 'minions', your brilliant 'million dollar ideas', and to handle all the annoying meetings that keep getting added to your busy schedule.
+In this project, you will create an entire API to serve information to a Boss Machine, a unique management application for today's most accomplished entrepreneurs. You will create routes to manage your 'minions', your brilliant 'million dollar ideas', and to handle all the annoying meetings that keep getting added to your busy schedule.
 
 ## How to Use:
 
@@ -19,11 +19,11 @@ In **server.js**, I changed some boilerplate code, but added key functionality t
 - Set up body-parsing middleware with the `body-parser` packagae.
 - Set up CORS middleware with the `cors` package.
 - Mounted the existing `apiRouter` at `/api`.
-- Started the server listening on the provided `PORT`. 
+- Started the server listening on the provided `PORT`.
 
 ### API Routes
 
-- The routes live inside the **server** folder. Each 'router' is responsible for handling the different url paths possible. 
+- The routes live inside the **server** folder. Each 'router' is responsible for handling the different url paths possible.
 - The 'database' exists in **server/db.js**. The beginning database will be seeded every time the server is restarted. So this will have to be altered if you want a working, living, continuing version of the project.
 
  #### Routes
@@ -51,7 +51,7 @@ For `/api/meetings` POST route, no request body is necessary, as meetings are ge
 
 ### Working with the 'Database'
 
-The **server/db.js** file exports helper functions for working with the database arrays. They follow these **Schemas**: 
+The **server/db.js** file exports helper functions for working with the database arrays. They follow these **Schemas**:
 
 - Minion:
   - id: string
@@ -69,7 +69,7 @@ The **server/db.js** file exports helper functions for working with the database
   - date: JS `Date` object
   - day: string
   - note: string
-  
+
   Within the Minion router is the schema to implement routes to allow bosses to add and remove work from their minions' backlogs within the API
 
  - Work:
